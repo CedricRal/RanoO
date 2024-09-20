@@ -1,12 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import {View, Text, TouchableOpacity, ImageBackground, FlatList, StyleSheet, StatusBar} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import DocumentPicker from 'react-native-document-picker';
 import RNBluetoothClassic, { BluetoothDevice } from 'react-native-bluetooth-classic';
 import KeepAwake from 'react-native-keep-awake';
 import {Immersive} from 'react-native-immersive';
+import { AppContext } from '../AppContext'
 
 function HomeScreen() {
+    const { setSharedVariable } = useContext(AppContext);
+
     const image = require('../assets/fond.png');
     const navigation = useNavigation();
 
@@ -65,6 +68,11 @@ function HomeScreen() {
                   return box;
                 });
                 if (box === "O\n"){navigation.navigate('Video', {lien:videoUri})}
+                if (box === "N\n"){{
+                  setSharedVariable(true);
+                  Immersive.on();
+                  Immersive.setImmersive(true);
+                }}
               }
             } catch (error) {
               console.log(error);
